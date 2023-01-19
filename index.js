@@ -40,10 +40,14 @@ app.use(function (req, res, next) {
 })
 
 app.get('/', (req, res) => {
-    // if request is api request, send test data, else redirect to website.
-    if (req.headers.host == 'api.quizapi.net') {
-        res.send('API is running!');
+    // if request asks for json, return json
+    if (req.query.json != null) {
+        res.json([{
+            "error": "false",
+            "message": "Welcome to the API of the quiz app."
+        }]);
     } else {
+        // redirect to the website
         res.redirect('https://quizapi.net');
     }
 });
