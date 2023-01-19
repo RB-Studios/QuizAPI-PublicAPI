@@ -7,13 +7,13 @@ var express = require('express');
 var app = express();
 var router = express.Router()
 
-var mysql      = require('mysql');
+var mysql = require('mysql');
 var connection = mysql.createConnection({
-    host     : process.env.DATABASE_HOST,
-    port     : process.env.DATABASE_PORT,
-    user     : process.env.DATABASE_USER,
-    password : process.env.DATABASE_PASSWORD,
-    database : process.env.DATABASE_NAME
+    host: process.env.DATABASE_HOST,
+    port: process.env.DATABASE_PORT,
+    user: process.env.DATABASE_USER,
+    password: process.env.DATABASE_PASSWORD,
+    database: process.env.DATABASE_NAME
 });
 connection.connect();
 
@@ -24,7 +24,7 @@ connection.connect();
 app.use(function (req, res, next) {
     // write to api-log.txt file
     var fs = require('fs');
-    var log = fs.createWriteStream('api-log.txt', {flags: 'a'});
+    var log = fs.createWriteStream('api-log.txt', { flags: 'a' });
     log.write('---------------------\r')
     const d = new Date();
     const t = d.toLocaleString('nl-NL', { timeZone: 'Europe/Amsterdam' })
@@ -41,7 +41,7 @@ app.use(function (req, res, next) {
 
 app.get('/', (req, res) => {
     // if request is api request, send test data, else redirect to website.
-    if (req.headers.host == 'localhost:8080') {
+    if (req.headers.host == 'api.quizapi.net') {
         res.send('API is running!');
     } else {
         res.redirect('https://quizapi.net');
@@ -121,8 +121,9 @@ app.get('/a/abcd/', (req, res) => {
     } else {
         // send error and eroor message
         res.send([{
-            "error"  : "true", 
-            "message": "No question id provided."}]);
+            "error": "true",
+            "message": "No question id provided."
+        }]);
     }
 });
 
@@ -137,7 +138,7 @@ app.get('/a/truefalse/', (req, res) => {
     } else {
         // send error and eroor message
         res.send([{
-            "error"  : "true", 
+            "error": "true",
             "message": "No question id provided."
         }]);
     }
@@ -154,11 +155,11 @@ app.get('/a/math/', (req, res) => {
     } else {
         // send error and eroor message
         res.send([{
-            "error"  : "true", 
+            "error": "true",
             "message": "No question id provided."
         }]);
     }
-}); 
+});
 
 // --------------------- API ---------------------
 // Error handling
@@ -166,7 +167,7 @@ app.get('/a/math/', (req, res) => {
 
 app.get('*', (req, res) => {
     res.send([{
-        "error"  : "true",
+        "error": "true",
         "message": "Invalid request."
     }]);
 });
@@ -177,7 +178,7 @@ app.get('*', (req, res) => {
 
 app.listen(8080, () => {
     console.log('API listening on port 8080! The API is running at http://localhost:8080/');
-    console.log('Press CTRL + C to stop the API.'); 
+    console.log('Press CTRL + C to stop the API.');
     connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
         if (error) throw error;
         console.log('The solution is: ', results[0].solution);
